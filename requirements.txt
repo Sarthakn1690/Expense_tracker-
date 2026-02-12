@@ -1,6 +1,5 @@
-# Add your Python dependencies here, for example:
-# fastapi
-# uvicorn
-# sqlalchemy
-# pandas
+streamlit
+pandas
+matplotlib
+bcrypt
 
