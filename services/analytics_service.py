@@ -1,15 +1,12 @@
 import pandas as pd
 from database.db import get_connection
 
-def get_dataframe():
+def get_user_dataframe(user_id):
     conn = get_connection()
-    df = pd.read_sql("SELECT * FROM expenses", conn)
+    df = pd.read_sql(
+        "SELECT * FROM expenses WHERE user_id=?",
+        conn,
+        params=(user_id,)
+    )
     conn.close()
     return df
-
-def category_summary(df):
-    return df.groupby("category")["amount"].sum()
-
-def daily_summary(df):
-    df["date"] = pd.to_datetime(df["date"])
-    return df.groupby("date")["amount"].sum()
