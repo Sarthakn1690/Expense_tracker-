@@ -20,12 +20,13 @@ def create_tables():
     )
     """)
 
-    # Expenses table
+    # Expenses table with DATE + TIME
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS expenses (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
         date TEXT,
+        time TEXT,
         category TEXT,
         amount REAL,
         note TEXT,
@@ -35,3 +36,4 @@ def create_tables():
 
     conn.commit()
     conn.close()
+

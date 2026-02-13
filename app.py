@@ -38,7 +38,7 @@ if st.session_state.logged_in:
 # ---------------- LOGIN / REGISTER ----------------
 if not st.session_state.logged_in:
 
-    st.markdown("<h1 style='text-align:center;'>💰 Secure Expense Tracker</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align:center;'> Secure Expense Tracker</h1>", unsafe_allow_html=True)
     st.markdown("### Please Login or Register")
 
     menu = st.radio("", ["Login", "Register"], horizontal=True)
@@ -71,7 +71,7 @@ if not st.session_state.logged_in:
 # ---------------- MAIN APPLICATION ----------------
 else:
 
-    st.sidebar.title("📊 Navigation")
+    st.sidebar.title("Navigation")
 
     if st.sidebar.button("Logout"):
         st.session_state.logged_in = False
@@ -88,7 +88,7 @@ else:
     # ---------------- DASHBOARD ----------------
     if page == "Dashboard":
 
-        st.title("📈 Expense Dashboard")
+        st.title("Expense Dashboard")
 
         df = get_user_dataframe(user_id)
 
@@ -107,6 +107,9 @@ else:
 
             st.divider()
 
+            # Combine Date + Time for better grouping
+            df["datetime"] = pd.to_datetime(df["date"] + " " + df["time"])
+
             col1, col2 = st.columns(2)
 
             with col1:
@@ -114,9 +117,8 @@ else:
                 st.bar_chart(df.groupby("category")["amount"].sum())
 
             with col2:
-                st.subheader("Daily Expense Trend")
-                df["date"] = pd.to_datetime(df["date"])
-                st.line_chart(df.groupby("date")["amount"].sum())
+                st.subheader("Expense Trend Over Time")
+                st.line_chart(df.groupby("datetime")["amount"].sum())
 
             st.subheader("Expense Breakdown")
             st.pyplot(
@@ -129,7 +131,7 @@ else:
     # ---------------- ADD EXPENSE ----------------
     elif page == "Add Expense":
 
-        st.title("➕ Add New Expense")
+        st.title("Add New Expense")
 
         col1, col2 = st.columns(2)
 
@@ -151,14 +153,14 @@ else:
     # ---------------- VIEW EXPENSES ----------------
     elif page == "View Expenses":
 
-        st.title("📂 Your Expenses")
+        st.title("Your Expenses")
 
         data = get_user_expenses(user_id)
 
         if data:
             df = pd.DataFrame(
                 data,
-                columns=["ID", "User", "Date", "Category", "Amount", "Note"]
+                columns=["ID", "User", "Date", "Time", "Category", "Amount", "Note"]
             )
             st.dataframe(df, use_container_width=True)
 
@@ -170,3 +172,4 @@ else:
                 st.success("Expense deleted successfully!")
         else:
             st.info("No expenses available.")
+
