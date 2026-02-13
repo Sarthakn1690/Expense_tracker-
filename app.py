@@ -71,7 +71,7 @@ if not st.session_state.logged_in:
 # ---------------- MAIN APPLICATION ----------------
 else:
 
-    st.sidebar.title("Navigation")
+    st.sidebar.title("Expense Tracker")
 
     if st.sidebar.button("Logout"):
         st.session_state.logged_in = False
